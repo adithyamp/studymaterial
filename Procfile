@@ -1,0 +1,1 @@
+web: gunicorn --pythonpath django_studymaterial django_studymaterial.wsgi --log-file -
