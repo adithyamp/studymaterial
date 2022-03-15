@@ -25,7 +25,7 @@ SECRET_KEY = '#*i^m8#=1!mx-%+)0u1xqfx&17^k_jk5%c#_rnk$5l%&b*o0yy'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://studymaterial007.herokuapp.com/', 'localhost']
 
 
 # Application definition
