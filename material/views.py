@@ -45,6 +45,7 @@ def material_form(request):
                 subject = mform.cleaned_data["subject"],
                 material = mform.cleaned_data["material"],
                 description = mform.cleaned_data["description"],
+                name = mform.cleaned_data["name"],
             )
             obj.save()
             messages.info(request, "Your material has been successfully uploaded !")
