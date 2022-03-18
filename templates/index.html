@@ -3,141 +3,98 @@
 {% load bulma_tags %}
 {% block body %}
 
+        <div class="container" style="padding-top: 20px;">
 
-
-<section class="section">
-    <div class="container" >
-
-      <div class="columns">
-        <div class="tile is-ancestor">
-          <div class="column is-3">
-
-            <div class="row">
-                <div class="form-group">
-                <div class="tile is-parent" style="padding-top: 50px;">
-                  <article class="panel is-primary">
-                    <center>
-                    <p class="panel-heading ">
-                      Filters
-                    </p>
-                  </center>
+          
+          <div class="row">
+            <div class="col-7">
+              <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+                <div class="card-header">FILTERS</div>
+                <div class="card-body">
                   <form action="" method="get" 
-                  style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                    {{ myfilter.form|bulma }}
+                  style="" class="mobile">
+                    {{myfilter.form|bulma}}
+                    <br>
                     <center>
-                    <button class="button is-link" type="submit">Filter</button>
+                    <button class="btn btn-primary" type="submit">Filter</button>
                    </center>
                   </form>
-                    </article>
-                    </div>
-                  </div>
-              </div>
-              
-         </div>
-
-         <div class="container" style="padding-top: 50px;">
-            <div class="row">
-
-              <!--{% if messages %}
-              <article class="message is-success">
-                <div class="message-body">
-                  {% for message in messages %}
-                   <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-                  {% endfor %}
-                </div>  
-              </article>
-              {% endif %}-->
-
-              {% for material in material_list %}
-
-                <div class="col-12 mt-3">
-                        <div class="card" style="font-weight: bold; font-display:;">
-                            <header class="card-header">
-                              <p class="card-header-title">
-                               {{ material.course }}
-                              </p>
-                              <button class="card-header-icon" aria-label="more options">
-                                <span class="icon">
-                                  <i class="fas fa-angle-down" aria-hidden="true"></i>
-                                </span>
-                              </button>
-                            </header>
-                            <div class="card-content">
-                              <div class="content">
-                                  Subject - {{material.subject}} | Semester - {{material.semester}} | {{material.description}}
-                                
-                                <br>
-                                Uploaded By - {{material.name}}
-                              </div>
-                            </div>
-                            <footer class="card-footer">
-                             
-                              <a href="{{material.material.url}}" download class="card-footer-item button is-medium is-link">Download</a>
-                            </footer>
-                          </div>
-              
                 </div>
+              </div>
+            </div>
+          
+   
+         
+              <div class="col-7" style="padding-left: 23px;">
 
+                {% for material in material_list %}
+                <div class="row">
+                <div class="card" >
+                  <h5 class="card-header">{{material.course}}</h5>
+                  <div class="card-body">
+                    <h5 class="card-title"><B>Subject - {{material.subject}} | Semester - {{material.semester}}</B></h5>
+                    <p class="card-text">Uploaded By - {{material.name}} | Date - {{material.date|date:"d N Y"}}</B></p>
+                    <p class="card-text">{{material.description}}</p>
+                    <a href="{{material.material.url}}" download class="btn btn-primary">Download</a>
+                  </div>
+                </div>
+              </div>
+              <br>
               {% empty %}
 
-              <h2 class="title" style="padding-top: 50px; padding-left: 120px;">Sorry material does not exist !</h2>
-              <a href="{% url 'material:material_form' %}" style="padding-left: 120px;">
-                <button  style="font-weight: bold;" class="button is-link">Click to Add material</button>
+              <h2 class="title" style="">Sorry the material your looking for does not exist.</h2>
+              <a href="{% url 'material:material_form' %}" style="">
+                <button  style="font-weight: bold;" class="btn btn-primary">Click to Add material</button>
               </a>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
 
               {% endfor %}
-
+              </div>
               
             </div>
-        </div>
 
-        
+            <div class="container">
+              
+              <nav aria-label="...">
+                {% if material_list.has_other_pages %}
+                  <ul class="pagination justify-content-center">
+                  {% if material_list.has_previous %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{material_list.previous_page_number}}" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                  {% else %}
+                    <li class="disabled"></li>
+                  {% endif %}
 
-          </div>
-        </div>
-      </section>
+                  {% for pages in material_list.paginator.page_range %}
 
-      <section class="section">
-        <div class="container">
-          <nav class="pagination is-rounded is-centered" role="navigation" aria-label="pagination" 
-          style="padding-left: 330px;">
-          
-            {% if material_list.has_other_pages %}
-            <ul class="pagination">
+                    {% if material_list.number == pages %}
+                      <li class="page-item"><a class="page-link" href="#">{{pages}}</a></li>
+                    {% else %}
+                      <li class="page-item"><a class="page-link" href="?page={{pages}}">{{pages}}</a></li>
+                    {% endif %}
 
-              {% if material_list.has_previous %}
-                  <a class="pagination-previous is-current" href="?page={{material_list.previous_page_number}}">Previous</a>
-              {% else %}
-                  <a href="" class="disabled"></a>
+                  {% endfor %}
+                
+                  {% if material_list.has_next %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{material_list.next_page_number}}">Next</a>
+                    </li>
+                  {% else %}
+                    <li class="disabled"></li>
+                  {% endif %}
+
+
+                </ul>
               {% endif %}
 
-            <ul class="pagination-list">
-              {% for pages in material_list.paginator.page_range %}
-
-                {% if material_list.number == pages %}
-                   <li><a class="pagination-link is-current" aria-label="">{{pages}}</a></li>
-                {% else %}
-                   <li><a class="pagination-link" aria-label="" href="?page={{pages}}">{{pages}}</a></li>
-                {% endif %}   
-
-              {% endfor %}
-            </ul>
-
-              {% if material_list.has_next %}
-                <a class="pagination-next" href="?page={{material_list.next_page_number}}">Next page</a>
-              {% else %}
-                  <a href="" class="disabled"></a>
-              {% endif %}
-
-            </ul>
-          {% endif %}
-
-        </nav>
-
-
-
+              </nav>
+            </div>
         </div>
-      </section>
-
-
 {% endblock body %}
